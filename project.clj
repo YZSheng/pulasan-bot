@@ -10,7 +10,7 @@
                  [morse               "0.2.4"]]
 
   :plugins [[lein-environ "1.1.0"]]
-
+  :min-lein-version "2.0.0"
   :main ^:skip-aot pulasan-bot.core
   :target-path "target/%s"
   :uberjar-name "pulasan-bot-standalone.jar"
