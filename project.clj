@@ -13,5 +13,6 @@
 
   :main ^:skip-aot pulasan-bot.core
   :target-path "target/%s"
-
-  :profiles {:uberjar {:aot :all}})
+  :uberjar-name "pulasan-bot-standalone.jar"
+  :profiles {:uberjar {:aot :all}
+             :production {:env {:production true}}})
