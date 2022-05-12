@@ -9,7 +9,7 @@
 (def ^:private todoist-endpiont "https://api.todoist.com/rest/v1/tasks")
 
 (defn- generate-payload [task]
-  (generate-string {:content task}))
+  (generate-string {:content task :description "Added by PulasanBot"}))
 
 (defn- save-todo [what]
   {:pre [(not (str/blank? todoist-api-token))]}
