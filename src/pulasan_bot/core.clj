@@ -11,6 +11,7 @@
 (def token (env :telegram-token))
 (def c (atom nil))
 
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (h/defhandler handler
 
   (h/command-fn "start"
@@ -33,6 +34,7 @@
        (catch Exception e (str "caught exception: " (.getMessage e)))))))
 
 ;; start bot in repl
+#_{:clj-kondo/ignore [:unresolved-symbol]}
 (def channel (p/start token handler))
 
 (defn -main

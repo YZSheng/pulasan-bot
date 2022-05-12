@@ -9,7 +9,8 @@
                  [environ             "1.1.0"]
                  [morse               "0.2.4"]]
 
-  :plugins [[lein-environ "1.1.0"]]
+  :plugins [[lein-environ "1.1.0"]
+            [jonase/eastwood "1.2.3"]]
   :min-lein-version "2.0.0"
   :main ^:skip-aot pulasan-bot.core
   :uberjar-name "pulasan-bot-standalone.jar"
