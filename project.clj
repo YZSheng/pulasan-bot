@@ -7,7 +7,9 @@
 
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [environ             "1.1.0"]
-                 [morse               "0.2.4"]]
+                 [morse               "0.2.4"]
+                 [clj-http            "3.12.3"]
+                 [cheshire            "5.10.2"]]
 
   :plugins [[lein-environ "1.1.0"]
             [jonase/eastwood "1.2.3"]]

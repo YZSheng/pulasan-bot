@@ -5,7 +5,8 @@
             [morse.handlers :as h]
             [morse.polling :as p]
             [morse.api :as t]
-            [pulasan-bot.message.core :refer [respond-text-to-chat]])
+            [pulasan-bot.message.core :refer [respond-text-to-chat]]
+            [pulasan-bot.command.remind :refer [handle-remind-command]])
   (:gen-class))
 
 (def token (env :telegram-token))
@@ -23,6 +24,14 @@
                 (fn [{{id :id :as chat} :chat}]
                   (println "Help was requested in " chat)
                   (t/send-text token id "Help is on the way")))
+
+  (h/command-fn "remind"
+                (fn [{{id :id} :chat text :text}]
+                  (println "Remind was requested in" text)
+                  (try
+                    (handle-remind-command text)
+                    (t/send-text token id "Reminder is added to your Todo-ist list.")
+                    (catch Exception e (str "remind failed for id " id " with error " (.getMessage e))))))
 
   (h/message-fn
    (fn [{{id :id} :chat :as message}]
