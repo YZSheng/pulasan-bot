@@ -4,14 +4,11 @@
             [environ.core :refer [env]]
             [morse.handlers :as h]
             [morse.polling :as p]
-            [morse.api :as t])
+            [morse.api :as t]
+            [pulasan-bot.message.baobao :refer [respond-to-baobao]])
   (:gen-class))
 
 (def token (env :telegram-token))
-
-(defn respond-to-baobao [text]
-  (when-let [[match] (re-seq #"宝宝(.+)不\1" text)]
-    (str (second match) "!!!")))
 
 (def c (atom nil))
 
@@ -29,9 +26,11 @@
 
   (h/message-fn
    (fn [{{id :id} :chat :as message}]
-     (reset! c message)
-     (println "Intercepted message: " message)
-     (t/send-text token id (or (respond-to-baobao (:text message)) "I don't do a whole lot ... yet.")))))
+     (try
+       (reset! c message)
+       (println "Intercepted message: " message)
+       (t/send-text token id (or (respond-to-baobao (:text message)) "I don't do a whole lot ... yet."))
+       (catch Exception e (str "caught exception: " (.getMessage e)))))))
 
 ;; start bot in repl
 (def channel (p/start token handler))
