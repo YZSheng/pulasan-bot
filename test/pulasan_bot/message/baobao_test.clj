@@ -1,6 +1,6 @@
-(ns pulasan-bot.core-test
+(ns pulasan-bot.message.baobao-test
   (:require [clojure.test :refer :all]
-    [pulasan-bot.core :refer :all]))
+            [pulasan-bot.message.baobao :refer :all]))
 
 (deftest baby-questions
   (testing "Answer to baby questions"

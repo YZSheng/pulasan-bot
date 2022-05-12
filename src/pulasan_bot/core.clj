@@ -5,11 +5,10 @@
             [morse.handlers :as h]
             [morse.polling :as p]
             [morse.api :as t]
-            [pulasan-bot.message.baobao :refer [respond-to-baobao]])
+            [pulasan-bot.message.core :refer [respond-text-to-chat]])
   (:gen-class))
 
 (def token (env :telegram-token))
-
 (def c (atom nil))
 
 (h/defhandler handler
@@ -29,7 +28,8 @@
      (try
        (reset! c message)
        (println "Intercepted message: " message)
-       (t/send-text token id (or (respond-to-baobao (:text message)) "I don't do a whole lot ... yet."))
+       (when-let [res (respond-text-to-chat message)]
+         (t/send-text token id res))
        (catch Exception e (str "caught exception: " (.getMessage e)))))))
 
 ;; start bot in repl
@@ -47,4 +47,5 @@
 (comment
   ;; stop bot in repl
   (p/stop channel)
+  (respond-text-to-chat @c)
   @c)
