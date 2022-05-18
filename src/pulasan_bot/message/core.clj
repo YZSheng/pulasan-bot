@@ -10,4 +10,3 @@
   (if-let [res (find-first-response (:text message))]
     res
     (when (= type "private") default-answer)))
-

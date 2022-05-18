@@ -44,7 +44,7 @@
 
 ;; start bot in repl
 #_{:clj-kondo/ignore [:unresolved-symbol]}
-(def channel (p/start token handler))
+(def channel (p/start token #'handler))
 
 (defn -main
   [& args]
