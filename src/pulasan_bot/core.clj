@@ -32,7 +32,12 @@
                   (try
                     (handle-remind-command text todoist)
                     (t/send-text token id "Reminder is added to your Todo-ist list.")
-                    (catch Exception e (str "remind failed for id " id " with error " (.getMessage e))))))
+                    (catch IllegalArgumentException e (do 
+                                                        (t/send-text token id "Sorry but I didn't understand your remind command.")
+                                                        (println (str "remind failed for id " id " with illegal argument exception for command: " text)))))
+                    (catch Exception e (do 
+                                         (t/send-text token id "Saving reminder failed.")
+                                         (println (str "remind failed for id " id " with error " (.getMessage e))))))))
 
   (h/message-fn
    (fn [{{id :id} :chat :as message}]
