@@ -14,10 +14,24 @@
 (defn- generate-payload [task]
   (generate-string {:content (::todo/title task) :description "Added by PulasanBot"}))
 
+(defn- validate-api-token [[todo todoist-api-token]]
+  (if (not (str/blank? todoist-api-token))
+    todo
+    (throw (IllegalStateException. "Todo-ist API token is missing."))))
+
+(defn- validate-payload [todo]
+  (if (s/valid? ::todo/todo todo)
+    todo
+    (throw (IllegalArgumentException. (str "Invalid todo object received" todo)))))
+
+(defn- save-todo [todo]
+  (client/post todoist-endpiont {:headers {"Authorization" (str "Bearer " todoist-api-token)}
+                                 :content-type :json
+                                 :body (generate-payload todo)}))
+
 (def todoist (reify Todo
                  (save [_ todo]
-                   {:pre [(not (str/blank? todoist-api-token))
-                          (s/valid? ::todo/todo todo)]}
-                   (client/post todoist-endpiont {:headers {"Authorization" (str "Bearer " todoist-api-token)}
-                                                  :content-type :json
-                                                  :body (generate-payload todo)}))))
+                   (->> [todo todoist-api-token]
+                        validate-api-token
+                        validate-payload
+                        save-todo))))
