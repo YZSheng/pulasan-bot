@@ -32,21 +32,21 @@
                   (try
                     (handle-remind-command text todoist)
                     (t/send-text token id "Reminder is added to your Todo-ist list.")
-                    (catch IllegalArgumentException e (do 
+                    (catch IllegalArgumentException e (do
                                                         (t/send-text token id "Sorry but I didn't understand your remind command.")
-                                                        (println (str "remind failed for id " id " with illegal argument exception for command: " text)))))
-                    (catch Exception e (do 
+                                                        (println (str "remind failed for id " id " with message " (.getMessage e)))))
+                    (catch Exception e (do
                                          (t/send-text token id "Saving reminder failed.")
-                                         (println (str "remind failed for id " id " with error " (.getMessage e))))))))
+                                         (println (str "remind failed for id " id " with error " (.getMessage e)))))))))
 
-  (h/message-fn
-   (fn [{{id :id} :chat :as message}]
-     (try
-       (reset! c message)
-       (println "Intercepted message: " message)
-       (when-let [res (respond-text-to-chat message)]
-         (t/send-text token id res))
-       (catch Exception e (str "caught exception: " (.getMessage e)))))))
+(h/message-fn
+ (fn [{{id :id} :chat :as message}]
+   (try
+     (reset! c message)
+     (println "Intercepted message: " message)
+     (when-let [res (respond-text-to-chat message)]
+       (t/send-text token id res))
+     (catch Exception e (str "caught exception: " (.getMessage e))))))
 
 ;; start bot in repl
 #_{:clj-kondo/ignore [:unresolved-symbol]}
