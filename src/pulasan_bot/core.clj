@@ -6,6 +6,7 @@
             [morse.polling :as p]
             [morse.api :as t]
             [pulasan-bot.message.core :refer [respond-text-to-chat]]
+            [pulasan-bot.service.todoist :refer [todoist]]
             [pulasan-bot.command.remind :refer [handle-remind-command]])
   (:gen-class))
 
@@ -29,7 +30,7 @@
                 (fn [{{id :id} :chat text :text}]
                   (println "Remind was requested in" text)
                   (try
-                    (handle-remind-command text)
+                    (handle-remind-command text todoist)
                     (t/send-text token id "Reminder is added to your Todo-ist list.")
                     (catch Exception e (str "remind failed for id " id " with error " (.getMessage e))))))
 
