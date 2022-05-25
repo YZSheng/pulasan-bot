@@ -6,11 +6,13 @@
             [morse.polling :as p]
             [morse.api :as t]
             [pulasan-bot.message.core :refer [respond-text-to-chat]]
-            [pulasan-bot.service.todoist :refer [todoist]]
+            [pulasan-bot.service.todoist :refer [get-todoist]]
             [pulasan-bot.command.remind :refer [handle-remind-command]])
   (:gen-class))
 
 (def token (env :telegram-token))
+(def todoist-api-token (env :todoist-token))
+
 (def c (atom nil))
 
 #_{:clj-kondo/ignore [:unresolved-symbol]}
@@ -30,7 +32,7 @@
                 (fn [{{id :id} :chat text :text}]
                   (println "Remind was requested in" text)
                   (try
-                    (handle-remind-command text todoist)
+                    (handle-remind-command text (get-todoist todoist-api-token))
                     (t/send-text token id "Reminder is added to your Todo-ist list.")
                     (catch IllegalArgumentException e (do
                                                         (t/send-text token id "Sorry but I didn't understand your remind command.")
