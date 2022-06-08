@@ -26,7 +26,7 @@
   (h/command-fn "help"
                 (fn [{{id :id :as chat} :chat}]
                   (println "Help was requested in " chat)
-                  (t/send-text token id "Help is on the way")))
+                  (t/send-text token id "Help is on the way!")))
 
   (h/command-fn "remind"
                 (fn [{{id :id} :chat text :text}]
