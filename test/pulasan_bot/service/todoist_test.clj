@@ -1,8 +1,8 @@
 (ns pulasan-bot.service.todoist-test
-  (:require [clojure.test :refer :all]
+  (:require [clj-http.client :as client]
+            [clojure.test :refer :all]
             [pulasan-bot.command.remind :refer :all]
             [pulasan-bot.domain.todo :as todo]
-            [clj-http.client :as client]
             [pulasan-bot.service.todoist :refer [get-todoist]]
             [pulasan-bot.test-util :refer [rand-str]]))
 
@@ -21,5 +21,5 @@
     (with-redefs [client/post (fn [& args] (vec args))]
       (let [expected ["https://api.todoist.com/rest/v1/tasks" {:headers {"Authorization" (str "Bearer " mock-api-token)}
                                                                :content-type :json
-                                                               :body (str "{\"content\":\"" mock-title "\",\"description\":\"Added by PulasanBot\"}")}]]
+                                                               :body (str "{\"content\":\"" mock-title "\",\"description\":\"Added by PulasanBot\",\"due_string\":\"tomorrow\"}")}]]
         (is (= expected (save (get-todoist mock-api-token) {::todo/title mock-title})))))))
