@@ -15,7 +15,6 @@
     :text text}))
 
 (deftest get-text-response
-  (testing "Find the first response in private chat"
-    (is (= "A!!!" (respond-text-to-chat (make-message "宝宝A不A?" true))))
-    (is (= "I don't do a whole lot ... yet." (respond-text-to-chat (make-message "宝宝A不B?" true))))
-    (is (= "I don't do a whole lot ... yet." (respond-text-to-chat (make-message (rand-str) true))))))
+  (is (= "A!!!" (respond-text-to-chat (make-message "宝宝A不A?" true))))
+  (is (= "I don't do a whole lot ... yet." (respond-text-to-chat (make-message "宝宝A不B?" true))))
+  (is (= "I don't do a whole lot ... yet." (respond-text-to-chat (make-message (rand-str) true)))))
